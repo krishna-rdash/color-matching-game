@@ -1,0 +1,11 @@
+.tile{
+    width: 120px;
+    height:120px;
+    margin:5px;
+}
+.boardContainer{
+    display: flex;
+    width:550px;
+    flex-wrap: wrap;
+    padding: 5px;
+}
