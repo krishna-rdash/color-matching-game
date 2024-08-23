@@ -1,15 +1,16 @@
-import { useState } from "react";
 import "./App.css";
-import GameBoard from "./components/gameBoard";
-import Timer from "./components/timer";
-import { useAppSelector } from "./hooks";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import GamePage from "./components/gamePage";
+import Login from "./components/auth";
 function App() {
-  const gameStatus = useAppSelector((state) => state.gameStatus.status);
   return (
     <div className="App">
-      <Timer />
-      <GameBoard />
-      {gameStatus}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login/>} />
+          <Route path="gamePage" element={<GamePage/>} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

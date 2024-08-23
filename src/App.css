@@ -5,5 +5,15 @@
   justify-content: center;
   align-items: center;
 }
-
-
+button {
+  height: 40px;
+  font-size: larger;
+  margin-block-start: 15px;
+  background-color: blue;
+  color: azure;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: rgb(0, 94, 255);
+}
