@@ -15,11 +15,23 @@ const colors = [
   "#1ABC9C",
   "#ccc",
 ];
+const isMarked = (tileNumber: number): boolean => colorIndex[tileNumber] === 6;
+
+const checkColorParity = (
+  firstTileNumber: number,
+  secondTileNumber: number
+): boolean => colorIndex[firstTileNumber] === colorIndex[secondTileNumber];
+
+const markTiles = (firstTileNumber: number, secondTileNumber: number): void => {
+  colorIndex[firstTileNumber] = 6;
+  colorIndex[secondTileNumber] = 6;
+};
 const GameBoard = () => {
   const dispatch = useAppDispatch();
   const gameStatus = useAppSelector((state) => state.gameStatus.status);
-  const [firstClickedTile, setFirstClickedTile] =
-    useState<HTMLDivElement | null>(null);
+  const [firstClickedTileNo, setFirstClickedTileNo] = useState<number | null>(
+    null
+  );
   const { current: colorMap } = useRef<Map<number, number>>(new Map());
   initializeColorMap(colorMap);
 
@@ -28,35 +40,35 @@ const GameBoard = () => {
     const clickedTile = e.target as HTMLDivElement;
     const tileNumber = Number(clickedTile.getAttribute("data-color-index"));
     const tileColorIdx = colorIndex[tileNumber];
-
-    if (tileColorIdx === 6) return;
-    if (!firstClickedTile) {
-      setFirstClickedTile(clickedTile);
+    if (firstClickedTileNo === null) {
+      setFirstClickedTileNo(tileNumber);
       return;
     }
-    const secondClickedTile = clickedTile;
-    if (firstClickedTile === secondClickedTile) {
-      setFirstClickedTile(null);
+    const secondClickedTileNo = tileNumber;
+    if (firstClickedTileNo === secondClickedTileNo || isMarked(tileNumber)) {
+      setFirstClickedTileNo(null);
       return;
     }
-    const firstTileNumber = Number(
-      firstClickedTile.getAttribute("data-color-index")
+    const isSameColorTiles: boolean = checkColorParity(
+      firstClickedTileNo,
+      secondClickedTileNo
     );
-    const secondTileNumber = tileNumber;
-    const firstTileColorIdx = colorIndex[firstTileNumber];
-    const secondTileColorIdx = tileColorIdx;
-    if (firstTileColorIdx !== secondTileColorIdx) {
-      setFirstClickedTile(null);
+    if (isSameColorTiles) {
+      markTiles(firstClickedTileNo, secondClickedTileNo);
+    } else {
+      setFirstClickedTileNo(null);
       return;
     }
-    colorIndex[firstTileNumber] = 6;
-    colorIndex[secondTileNumber] = 6;
+    decreaseColorCount(tileColorIdx);
+    if (isGameOver(colorMap)) dispatch(setStatus("Won"));
+    setFirstClickedTileNo(null);
+  };
+  const decreaseColorCount = (tileColorIdx: number): void => {
     const prevCount = colorMap.get(tileColorIdx);
     if (!prevCount) return;
     colorMap.set(tileColorIdx, prevCount - 2);
-    setFirstClickedTile(null);
-    if (isGameOver(colorMap)) dispatch(setStatus("Won"));
   };
+
   return (
     <>
       <div className="boardContainer">
