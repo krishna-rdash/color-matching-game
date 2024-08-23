@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setStatus } from "../store/gameStatus/gameStatus";
-import { isGameOver } from "../utility";
+import { initializeColorIdxArray, isGameOver } from "../utility";
 import "../styles/gameBoard.css";
 let colorIndex: number[];
 const colors = [
@@ -14,7 +14,6 @@ const colors = [
   "#ccc",
 ];
 const isMarked = (tileNumber: number): boolean => colorIndex[tileNumber] === 6;
-
 const checkColorParity = (
   firstTileNumber: number,
   secondTileNumber: number
@@ -30,14 +29,9 @@ const GameBoard = () => {
   const [firstClickedTileNo, setFirstClickedTileNo] = useState<number | null>(
     null
   );
-  colorIndex = useMemo(
-    () => Array.from({ length: 16 }, () => Math.floor(Math.random() * 6)),
-    []
-  );
-  const handleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+  colorIndex = useMemo(() => initializeColorIdxArray(), []);
+  const handleClick = (tileNumber: number) => {
     if (gameStatus !== "running") return;
-    const clickedTile = e.target as HTMLDivElement;
-    const tileNumber = Number(clickedTile.getAttribute("data-color-index"));
     if (firstClickedTileNo === null) {
       setFirstClickedTileNo(tileNumber);
       return;
@@ -69,8 +63,7 @@ const GameBoard = () => {
             <div
               className={`tile`}
               key={idx}
-              onClick={handleClick}
-              data-color-index={idx}
+              onClick={() => handleClick(idx)}
               style={{ backgroundColor: colors[item] }}
             ></div>
           );

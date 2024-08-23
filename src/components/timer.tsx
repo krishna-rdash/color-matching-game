@@ -13,7 +13,7 @@ const Timer = () => {
   }, []);
   if (gameStatus !== "running" || timeRemaining === 0) {
     if (intervalRef.current) clearInterval(intervalRef.current);
-    if (timeRemaining === 0) dispatch(setStatus("LOST"));
+    if (timeRemaining === 0) dispatch(setStatus("Lost"));
   }
 
   return <div style={{ fontSize: "50px" }}>{timeRemaining}</div>;

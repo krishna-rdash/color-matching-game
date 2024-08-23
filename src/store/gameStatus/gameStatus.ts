@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-
+type STATUS = "Won"|"Lost";
 // Define a type for the slice state
 interface GameStatusState {
   status: string;
@@ -17,7 +17,7 @@ export const gameStatusSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setStatus:(state,action:PayloadAction<string>)=>{
+    setStatus:(state,action:PayloadAction<STATUS>)=>{
         state.status =action.payload;
     }
   },
