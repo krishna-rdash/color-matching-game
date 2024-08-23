@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useRef} from "react";
+import { useAppDispatch,useAppSelector } from "../hooks";
+import { setStatus } from "../store/gameStatus/gameStatus";
 import "../styles/gameBoard.css";
-import { click } from "@testing-library/user-event/dist/click";
 const colorIndex = Array.from({ length: 16 }, () =>
   Math.floor(Math.random() * 6)
 );
@@ -13,16 +14,21 @@ const colors = [
   "#1ABC9C",
 ];
 const GameBoard = () => {
-  const [over, setOver] = useState<Boolean>(false);
+  const dispatch = useAppDispatch();
+  const gameStatus = useAppSelector((state) => state.gameStatus.status);
   let { current: clickedElement } = useRef<HTMLDivElement | null>(null);
   const myMap: Map<number, number> = new Map();
   for (let i: number = 0; i < 6; i++) myMap.set(i, 0);
 
   const handleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (over) return;
+    if(gameStatus!=="running") return;
     const clickedTile = e.target as HTMLDivElement;
     if (!clickedElement) {
       clickedElement = clickedTile;
+      return;
+    }
+    if(clickedElement===clickedTile) {
+      clickedElement = null;
       return;
     }
     const firstTileClassList = clickedElement.classList;
@@ -50,8 +56,7 @@ const GameBoard = () => {
       if (colorCount === undefined) return;
       if (colorCount <= 1) noPairCount++;
     }
-    console.log(myMap);
-    if (noPairCount === 6) setOver(true);
+    if (noPairCount === 6) dispatch(setStatus("Won"));
   };
   return (
     <>
@@ -69,7 +74,6 @@ const GameBoard = () => {
           );
         })}
       </div>
-      {over && <div>Game Over</div>}
     </>
   );
 };
