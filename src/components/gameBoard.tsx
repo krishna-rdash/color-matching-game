@@ -1,11 +1,9 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setStatus } from "../store/gameStatus/gameStatus";
 import { initializeColorMap, isGameOver } from "../utility";
 import "../styles/gameBoard.css";
-const colorIndex = Array.from({ length: 16 }, () =>
-  Math.floor(Math.random() * 6)
-);
+let colorIndex: number[];
 const colors = [
   "#FF5733",
   "#33FF57",
@@ -34,7 +32,10 @@ const GameBoard = () => {
   );
   const { current: colorMap } = useRef<Map<number, number>>(new Map());
   initializeColorMap(colorMap);
-
+  colorIndex = useMemo(
+    () => Array.from({ length: 16 }, () => Math.floor(Math.random() * 6)),
+    []
+  );
   const handleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (gameStatus !== "running") return;
     const clickedTile = e.target as HTMLDivElement;
