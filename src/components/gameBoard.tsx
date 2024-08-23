@@ -1,7 +1,7 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setStatus } from "../store/gameStatus/gameStatus";
-import { initializeColorMap, isGameOver } from "../utility";
+import { isGameOver } from "../utility";
 import "../styles/gameBoard.css";
 let colorIndex: number[];
 const colors = [
@@ -30,8 +30,6 @@ const GameBoard = () => {
   const [firstClickedTileNo, setFirstClickedTileNo] = useState<number | null>(
     null
   );
-  const { current: colorMap } = useRef<Map<number, number>>(new Map());
-  initializeColorMap(colorMap);
   colorIndex = useMemo(
     () => Array.from({ length: 16 }, () => Math.floor(Math.random() * 6)),
     []
@@ -40,7 +38,6 @@ const GameBoard = () => {
     if (gameStatus !== "running") return;
     const clickedTile = e.target as HTMLDivElement;
     const tileNumber = Number(clickedTile.getAttribute("data-color-index"));
-    const tileColorIdx = colorIndex[tileNumber];
     if (firstClickedTileNo === null) {
       setFirstClickedTileNo(tileNumber);
       return;
@@ -60,22 +57,14 @@ const GameBoard = () => {
       setFirstClickedTileNo(null);
       return;
     }
-    decreaseColorCount(tileColorIdx);
-    if (isGameOver(colorMap)) dispatch(setStatus("Won"));
+    if (isGameOver(colorIndex)) dispatch(setStatus("Won"));
     setFirstClickedTileNo(null);
-  };
-  const decreaseColorCount = (tileColorIdx: number): void => {
-    const prevCount = colorMap.get(tileColorIdx);
-    if (!prevCount) return;
-    colorMap.set(tileColorIdx, prevCount - 2);
   };
 
   return (
     <>
       <div className="boardContainer">
         {colorIndex.map((item, idx) => {
-          const prevCount: number = colorMap.get(item)!;
-          colorMap.set(item, prevCount + 1);
           return (
             <div
               className={`tile`}
