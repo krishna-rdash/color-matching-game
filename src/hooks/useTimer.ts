@@ -21,7 +21,7 @@ const useTimer = (initialTime: number): number => {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [gameStatus, dispatch]);
+  }, [gameStatus,dispatch]);
   return timeRemaining;
 };
 

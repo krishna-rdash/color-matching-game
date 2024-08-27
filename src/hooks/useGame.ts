@@ -20,7 +20,7 @@ const useGame = (sqSize: number): [number[], (tileNumber: number) => void] => {
     firstTileNumber: number,
     secondTileNumber: number
   ): void => {
-    colorIndex[firstTileNumber] =6;
+    colorIndex[firstTileNumber] = 6;
     colorIndex[secondTileNumber] = 6;
   };
   return [

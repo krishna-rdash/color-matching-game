@@ -1,13 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/auth.css";
-import { MouseEventHandler, useRef } from "react";
+import { MouseEventHandler, useState, ChangeEventHandler } from "react";
 const Login = () => {
   const navigate = useNavigate();
-  const contactNo = useRef<HTMLInputElement>(null);
+  const [contactNo, setContactNo] = useState<string>("");
   const handleLogin: MouseEventHandler<HTMLButtonElement> = () => {
-    const contactNumber = contactNo.current;
-    if (!contactNumber || !contactNumber.value) return;
+    const loginStatus = localStorage.getItem(contactNo);
+    if(!loginStatus) {
+      localStorage.setItem("user",contactNo);
+    }
     navigate("gamePage");
+  };
+  const isValidNumber = contactNo.length === 10;
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setContactNo(event.target.value);
   };
   return (
     <div className="authContainer">
@@ -15,9 +21,13 @@ const Login = () => {
         placeholder="Your Number"
         className="numberInput"
         type="number"
-        ref={contactNo}
+        onChange={handleChange}
       ></input>
-      <button className="LoginButton" onClick={handleLogin}>
+      <button
+        className="LoginButton"
+        onClick={handleLogin}
+        disabled={!isValidNumber}
+      >
         Log In & Play
       </button>
     </div>
