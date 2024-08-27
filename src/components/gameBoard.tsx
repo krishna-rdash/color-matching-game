@@ -1,8 +1,9 @@
 import "../styles/gameBoard.css";
 import useGame from "../hooks/useGame";
 import { colors } from "../type/variables";
+
 const GameBoard = () => {
-  const sqSize = 6;
+  const sqSize = 3;
   const [colorIndex, handleClick] = useGame(sqSize);
   return (
     <>

@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux_hooks";
 import { setStatus } from "../store/gameStatus/gameStatus";
-const useTimer = (initialTime: number): number => {
+
+const useTimer = (initialTime: number) => {
   const [timeRemaining, setTimeRemaining] = useState(initialTime);
   const gameStatus = useAppSelector((state) => state.gameStatus.status);
   const dispatch = useAppDispatch();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  useEffect(() => {
-    if (gameStatus !== "Running") return;
+  const startTimer = () => {
     intervalRef.current = setInterval(() => {
       setTimeRemaining((time) => {
         if (time <= 1) {
@@ -18,11 +18,32 @@ const useTimer = (initialTime: number): number => {
         return time - 1;
       });
     }, 1000);
+  };
+  useEffect(() => {
+    if (gameStatus !== "Running") return;
+    startTimer();
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [gameStatus,dispatch]);
-  return timeRemaining;
+  });
+
+  const restartTimer = () => {
+    setTimeRemaining(initialTime);
+  };
+  const stopTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+  const resumeTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    startTimer();
+  };
+
+  return {
+    timeRemaining,
+    restartTimer,
+    resumeTimer,
+    stopTimer,
+  };
 };
 
 export default useTimer;
