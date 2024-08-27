@@ -1,16 +1,15 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GamePage from "./components/gamePage";
 import Login from "./components/auth";
+const router = createBrowserRouter([
+  { path: "/", element: <Login /> },
+  { path: "gamePage", element: <GamePage /> },
+]);
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="gamePage" element={<GamePage />} />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </div>
   );
 }
