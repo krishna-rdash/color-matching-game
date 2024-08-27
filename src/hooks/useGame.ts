@@ -2,14 +2,13 @@ import { useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux_hooks";
 import { setStatus } from "../store/gameStatus/gameStatus";
 import { initializeColorIdxArray, isGameOver } from "../utility";
-const useGame = (): [number[], (tileNumber: number) => void] => {
+const useGame = (sqSize: number): [number[], (tileNumber: number) => void] => {
   const dispatch = useAppDispatch();
   const gameStatus = useAppSelector((state) => state.gameStatus.status);
   const [firstClickedTileNo, setFirstClickedTileNo] = useState<number | null>(
     null
   );
-  const colorIndex = useMemo(() => initializeColorIdxArray(), []);
-
+  const colorIndex = useMemo(() => initializeColorIdxArray(sqSize), [sqSize]);
   const isMarked = (tileNumber: number): boolean =>
     colorIndex[tileNumber] === 6;
   const checkColorParity = (
@@ -21,7 +20,7 @@ const useGame = (): [number[], (tileNumber: number) => void] => {
     firstTileNumber: number,
     secondTileNumber: number
   ): void => {
-    colorIndex[firstTileNumber] = 6;
+    colorIndex[firstTileNumber] =6;
     colorIndex[secondTileNumber] = 6;
   };
   return [

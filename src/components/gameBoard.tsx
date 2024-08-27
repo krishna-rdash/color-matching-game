@@ -1,20 +1,12 @@
 import "../styles/gameBoard.css";
 import useGame from "../hooks/useGame";
-const colors = [
-  "#FF5733",
-  "#33FF57",
-  "#3357FF",
-  "#F1C40F",
-  "#8E44AD",
-  "#1ABC9C",
-  "#ccc",
-];
-
+import { colors } from "../type/variables";
 const GameBoard = () => {
-  const [colorIndex, handleClick] = useGame();
+  const sqSize = 6;
+  const [colorIndex, handleClick] = useGame(sqSize);
   return (
     <>
-      <div className="boardContainer">
+      <div className="boardContainer" style={{ width: `${sqSize * 110}px` }}>
         {colorIndex.map((item, idx) => {
           return (
             <div

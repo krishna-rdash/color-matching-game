@@ -12,6 +12,6 @@ export const isGameOver = (colorIndex: number[]): Boolean => {
   }
   return true;
 };
-export const initializeColorIdxArray = (): number[] => {
-  return Array.from({ length: 16 }, () => Math.floor(Math.random() * 6));
+export const initializeColorIdxArray = (sqSize:number): number[] => {
+  return Array.from({ length: sqSize*sqSize}, () => Math.floor(Math.random() * 6));
 };
