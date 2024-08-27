@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/redux_hooks";
 import { setStatus } from "../store/gameStatus/gameStatus";
 const Timer = () => {
   const [timeRemaining, setTimeRemaining] = useState(15);
@@ -11,7 +11,7 @@ const Timer = () => {
       setTimeRemaining((time) => time - 1);
     }, 1000);
   }, []);
-  if (gameStatus !== "running" || timeRemaining === 0) {
+  if (gameStatus !== "Running" || timeRemaining === 0) {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (timeRemaining === 0) dispatch(setStatus("Lost"));
   }

@@ -1,6 +1,6 @@
 import GameBoard from "./gameBoard";
 import Timer from "./timer";
-import { useAppSelector, useAppDispatch } from "../hooks";
+import { useAppSelector, useAppDispatch } from "../hooks/redux_hooks";
 import { setStatus } from "../store/gameStatus/gameStatus";
 const GamePage = () => {
   const gameStatus = useAppSelector((state) => state.gameStatus.status);
@@ -14,7 +14,7 @@ const GamePage = () => {
       <Timer />
       <GameBoard />
       <div style={{ fontSize: "50px" }}>{gameStatus}</div>
-      {gameStatus !== "running" && (
+      {gameStatus !== "Running" && (
         <button onClick={reloadGame}>Play Again</button>
       )}
     </>

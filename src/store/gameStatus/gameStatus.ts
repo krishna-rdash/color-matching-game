@@ -3,10 +3,10 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 type STATUS = "Won" | "Lost" | "Running";
 interface GameStatusState {
-  status: string;
+  status: STATUS;
 }
 const initialState: GameStatusState = {
-  status: "running",
+  status: "Running",
 };
 
 export const gameStatusSlice = createSlice({
