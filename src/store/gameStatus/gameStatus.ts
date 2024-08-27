@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-type STATUS = "Won" | "Lost" | "Running";
-interface GameStatusState {
-  status: STATUS;
-}
+import { STATUS } from "../../type/custom-type";
+import { GameStatusState } from "../../type/interfaces";
+
 const initialState: GameStatusState = {
   status: "Running",
 };
